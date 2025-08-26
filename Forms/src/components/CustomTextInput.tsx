@@ -1,13 +1,6 @@
 import { ComponentProps } from 'react';
 import { useController } from 'react-hook-form';
-import {
-  TextInput,
-  StyleSheet,
-  View,
-  Text,
-  StyleProp,
-  ViewStyle,
-} from 'react-native';
+import { TextInput, StyleSheet, View, Text, StyleProp, ViewStyle } from 'react-native';
 
 type CustomTextInput = {
   label?: string;

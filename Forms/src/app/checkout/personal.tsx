@@ -5,11 +5,8 @@ import CustomTextInput from '../../components/CustomTextInput';
 import KeyboardAwareScrollView from '../../components/KeyboardAwareScrollView';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, SubmitHandler, FormProvider } from 'react-hook-form';
-import {
-  PersonalInfo,
-  PersonalInfoSchema,
-  useCheckoutForm,
-} from '../../contexts/CheckoutFormProvider';
+import { PersonalInfo, PersonalInfoSchema, useCheckoutForm } from '../../contexts/CheckoutFormProvider';
+import CustomDateTimePicker from '../../components/CustomDateTimePicker';
 
 export default function PersonalDetailsForm() {
   const { setPersonalInfo, personalInfo } = useCheckoutForm();
@@ -59,6 +56,8 @@ export default function PersonalDetailsForm() {
           placeholder="601234123123"
           inputMode="tel"
         />
+
+        <CustomDateTimePicker name="birthdate" />
 
         <CustomButton
           title="Next"

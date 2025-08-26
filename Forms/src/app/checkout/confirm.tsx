@@ -1,6 +1,6 @@
 import { Text, View, StyleSheet } from 'react-native';
 import CustomButton from '../../components/CustomButton';
-import { Link, router } from 'expo-router';
+import { Link } from 'expo-router';
 import KeyboardAwareScrollView from '../../components/KeyboardAwareScrollView';
 import { useCheckoutForm } from '../../contexts/CheckoutFormProvider';
 
@@ -23,7 +23,7 @@ export default function ConfirmForm() {
             </View>
             {Object.entries(personalInfo).map(([key, value]) => (
               <Text key={key}>
-                {key}: {value}
+                {key}: {value?.toString()}
               </Text>
             ))}
           </View>
@@ -42,7 +42,7 @@ export default function ConfirmForm() {
             </View>
             {Object.entries(paymentInfo).map(([key, value]) => (
               <Text key={key}>
-                {key}: {value}
+                {key}: {value?.toString()}
               </Text>
             ))}
           </View>

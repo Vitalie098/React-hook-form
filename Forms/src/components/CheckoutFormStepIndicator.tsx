@@ -26,6 +26,7 @@ export default function CheckoutFormStepIndicator() {
     >
       {steps.map((step, index) => (
         <View
+          key={step.key}
           style={{
             borderBottomWidth: 3,
             borderColor: stepIndex >= index ? '#005055' : 'lightgray',

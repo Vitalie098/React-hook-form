@@ -10,6 +10,7 @@ export const PersonalInfoSchema = z.object({
   city: z.string().min(1, { message: 'City is required!' }),
   postcode: z.string().min(1, { message: 'Postal code is required!' }),
   phone: z.string().min(1, { message: 'Phone is required!' }),
+  birthdate: z.date(),
 });
 export type PersonalInfo = z.infer<typeof PersonalInfoSchema>;
 
@@ -19,6 +20,8 @@ export const PaymentInfoSchema = z.object({
     .string()
     .regex(/^(0[1-9]|1[0-2])\/?([0-9]{2})$/, 'Please use the MM/YY format'),
   cvv: z.coerce.number().min(100).max(999),
+  saveCard: z.boolean().optional(),
+  switchValue: z.boolean().optional(),
 });
 export type PaymentInfo = z.infer<typeof PaymentInfoSchema>;
 
@@ -47,7 +50,6 @@ export default function CheckoutFormProvider({ children }: PropsWithChildren) {
       console.log('The form is incomplete');
       return;
     }
-    // send it to the server
 
     setPersonalInfo(undefined);
     setPaymentInfo(undefined);
