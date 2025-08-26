@@ -1,36 +1,82 @@
 import { Text, View, StyleSheet } from 'react-native';
 import CustomButton from '../../components/CustomButton';
-import { router } from 'expo-router';
+import { Link, router } from 'expo-router';
 import KeyboardAwareScrollView from '../../components/KeyboardAwareScrollView';
+import { useCheckoutForm } from '../../contexts/CheckoutFormProvider';
 
 export default function ConfirmForm() {
-  const onNext = () => {
-    // validate form
-
-    // submit the data
-
-    // redirect next
-    router.dismissAll();
-    router.back();
-  };
+  const { personalInfo, paymentInfo, onSubmit } = useCheckoutForm();
 
   return (
     <KeyboardAwareScrollView>
-      <Text>Confirm form submission</Text>
+      <View style={{ gap: 10, flex: 1 }}>
+        {personalInfo && (
+          <View style={styles.dataContainer}>
+            <View style={styles.dataContainerHeader}>
+              <Text style={styles.title}>Personal</Text>
+              <Link
+                href={'/checkout'}
+                style={{ color: '#005055', fontWeight: '600' }}
+              >
+                Edit
+              </Link>
+            </View>
+            {Object.entries(personalInfo).map(([key, value]) => (
+              <Text key={key}>
+                {key}: {value}
+              </Text>
+            ))}
+          </View>
+        )}
 
-      <CustomButton title="Submit" onPress={onNext} style={styles.button} />
+        {paymentInfo && (
+          <View style={styles.dataContainer}>
+            <View style={styles.dataContainerHeader}>
+              <Text style={styles.title}>Payment</Text>
+              <Link
+                href={'/checkout/payment'}
+                style={{ color: '#005055', fontWeight: '600' }}
+              >
+                Edit
+              </Link>
+            </View>
+            {Object.entries(paymentInfo).map(([key, value]) => (
+              <Text key={key}>
+                {key}: {value}
+              </Text>
+            ))}
+          </View>
+        )}
+
+        <CustomButton title="Submit" onPress={onSubmit} />
+      </View>
     </KeyboardAwareScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
     flex: 1,
-    padding: 10,
+    backgroundColor: '#fff',
+    padding: 15,
+    paddingBottom: 25,
+    gap: 15,
   },
-  button: {
-    marginTop: 'auto',
-    marginBottom: 25,
+  dataContainer: {
+    borderWidth: 1,
+    borderColor: 'gainsboro',
+    padding: 10,
+    borderRadius: 10,
+    gap: 3,
+  },
+  dataContainerHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: '600',
+    marginBottom: 10,
   },
 });

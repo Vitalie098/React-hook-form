@@ -1,19 +1,27 @@
-import {View, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import CustomButton from '../../components/CustomButton';
 import { router } from 'expo-router';
 import CustomTextInput from '../../components/CustomTextInput';
 import KeyboardAwareScrollView from '../../components/KeyboardAwareScrollView';
-
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, SubmitHandler, FormProvider } from 'react-hook-form';
+import {
+  PersonalInfo,
+  PersonalInfoSchema,
+  useCheckoutForm,
+} from '../../contexts/CheckoutFormProvider';
 
 export default function PersonalDetailsForm() {
-  const form = useForm();
+  const { setPersonalInfo, personalInfo } = useCheckoutForm();
 
-  console.log('Errors: ', form.formState.errors);
+  const form = useForm<PersonalInfo>({
+    resolver: zodResolver(PersonalInfoSchema),
+    defaultValues: personalInfo,
+  });
 
-  const onNext: SubmitHandler<any> = (data) => {
+  const onNext: SubmitHandler<PersonalInfo> = (data) => {
     // the data is Valid
-    console.log(data);
+    setPersonalInfo(data);
 
     // redirect next
     router.push('/checkout/payment');
@@ -38,7 +46,7 @@ export default function PersonalDetailsForm() {
             containerStyle={{ flex: 1 }}
           />
           <CustomTextInput
-            name="postCode"
+            name="postcode"
             label="Post code"
             placeholder="1234"
             containerStyle={{ flex: 1 }}
@@ -46,7 +54,7 @@ export default function PersonalDetailsForm() {
         </View>
 
         <CustomTextInput
-          name="phoneNumber"
+          name="phone"
           label="Phone number"
           placeholder="601234123123"
           inputMode="tel"

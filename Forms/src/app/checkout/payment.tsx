@@ -1,21 +1,64 @@
-import { Text, View, StyleSheet } from 'react-native';
-import { router } from 'expo-router';
+import { View, StyleSheet } from 'react-native';
 import CustomButton from '../../components/CustomButton';
+import { router } from 'expo-router';
+import KeyboardAwareScrollView from '../../components/KeyboardAwareScrollView';
+import CustomTextInput from '../../components/CustomTextInput';
+import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  PaymentInfo,
+  PaymentInfoSchema,
+  useCheckoutForm,
+} from '../../contexts/CheckoutFormProvider';
 
 export default function PaymentDetailsForm() {
-  const onNext = () => {
-    // validate form
+  const { setPaymentInfo, paymentInfo } = useCheckoutForm();
 
+  const form = useForm({
+    resolver: zodResolver(PaymentInfoSchema),
+    defaultValues: paymentInfo,
+  });
+
+  const onNext: SubmitHandler<PaymentInfo> = (data) => {
+    // validate form
+    setPaymentInfo(data);
     // redirect next
     router.push('/checkout/confirm');
   };
 
   return (
-    <View style={styles.container}>
-      <Text>Payment details </Text>
+    <KeyboardAwareScrollView>
+      <FormProvider {...form}>
+        <CustomTextInput
+          name="cardNumber"
+          label="Card number"
+          placeholder="1234123141234123"
+        />
 
-      <CustomButton title="Next" onPress={onNext} style={styles.button} />
-    </View>
+        <View style={{ flexDirection: 'row', gap: 5 }}>
+          <CustomTextInput
+            name="expireDate"
+            label="Expire date"
+            placeholder="01/23"
+            containerStyle={{ flex: 1 }}
+          />
+
+          <CustomTextInput
+            name="cvv"
+            label="Cvv"
+            placeholder="123"
+            inputMode="numeric"
+            containerStyle={{ flex: 1 }}
+          />
+        </View>
+
+        <CustomButton
+          title="Next"
+          onPress={form.handleSubmit(onNext)}
+          style={styles.button}
+        />
+      </FormProvider>
+    </KeyboardAwareScrollView>
   );
 }
 
@@ -27,6 +70,5 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 'auto',
-    marginBottom: 25,
   },
 });
